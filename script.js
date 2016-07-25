@@ -28,6 +28,26 @@ app.run(["$rootScope", "$location", function($rootScope, $location) {
  });
 }]);
 
+app.controller("MainCtrl", function($scope, $http, $firebaseArray, $firebaseObject, $firebaseAuth, $location, $routeParams, $route){
+
+
+
+
+
+
+
+
+	//sign out f(x)
+	$scope.authObj = $firebaseAuth();
+
+	$scope.signOut= function(){
+    	$scope.authObj.$signOut();
+    	$location.path("/login")
+    };
+});
+
+
+
 app.controller("SignUpCtrl", function($scope, $http, $route, $firebaseObject, $firebaseArray,$routeParams,$firebaseAuth, $location) {
 	$scope.authObj = $firebaseAuth();
 
@@ -47,9 +67,39 @@ app.controller("SignUpCtrl", function($scope, $http, $route, $firebaseObject, $f
 			$scope.users.password = $scope.password;
 			$scope.users.$save();
 
-			$location.path("/")
+			$location.path('/');
+			
 		}).catch(function(error) {
 			console.error("Error: ", error);
 		});
 	};
 });
+
+app.controller("LogInCtrl", function($scope, $http, $route, $firebaseObject, $firebaseArray, $routeParams, $firebaseAuth, $location) {
+	$scope.authObj = $firebaseAuth();
+
+    $scope.login = function() {
+        console.log($scope.email);
+        console.log($scope.password);
+
+        $scope.authObj.$signInWithEmailAndPassword($scope.email, $scope.password)
+        .then(function(firebaseUser) {
+            console.log("Signed in as:", firebaseUser.uid);
+            $location.path('/');
+
+        }).catch(function(error) {
+             console.error("Error: ", error);
+        })
+
+    }
+});
+
+
+
+
+
+
+
+
+
+
