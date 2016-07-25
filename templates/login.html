@@ -1,0 +1,30 @@
+<center>
+	<form ng-submit="login()">
+	  <ul>
+	  	<li>
+		  <div class="row">
+		    <div class="col-sm-2 col-sm-offset-3">
+		    	Email :
+		    </div>
+		    <input class="col-sm-3" ng-model="email">
+		  </div>
+		</li>
+		<li>  
+		  <div class="row">
+		    <div class="col-sm-2 col-sm-offset-3">
+		    	Password :
+		    </div>
+		    <input class="col-sm-3" ng-model="password">
+		  </div>
+	  	</li>
+	  </ul>
+	  <div class="row">
+	  	<a ng-href="#/">
+	  		<button ng-click="login()">
+	  			Log In!
+	  		</button>
+	  	</a>
+	  </div>
+	</form>
+	<a class="bump" ng-href="#/signup"><button>Sign Up!</button></a>
+</center>
