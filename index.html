@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Noob Board</title>
+	<!-- bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+   <!-- stylesheet -->
+   <link rel="stylesheet" href="stylesheet.css">
+</head>
+<body ng-app="noobApp">
+
+	<div class="container" ng-view></div>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.7/angular.js"></script>
+  	<script src="angular-route.js"></script>
+  	<script src="https://www.gstatic.com/firebasejs/3.2.0/firebase.js"></script>
+  	<script>
+     // Initialize Firebase
+     // Make sure to actually create the firebase project it wasnt working for some reason
+     var config = {
+        apiKey: "AIzaSyAOuUXhY32MvhGZGvS-9Pw_Xa7x2tKeG3g",
+        authDomain: "ixtension2.firebaseapp.com",
+        databaseURL: "https://ixtension2.firebaseio.com",
+        storageBucket: "ixtension2.appspot.com",
+      };
+     firebase.initializeApp(config);
+   	</script>
+   	<script src="https://cdn.firebase.com/libs/angularfire/2.0.1/angularfire.min.js"></script>  
+   	<script src="script.js"></script>
+
+</body>
+</html>
