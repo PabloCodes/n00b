@@ -29,7 +29,27 @@ app.run(["$rootScope", "$location", function($rootScope, $location) {
 }]);
 
 app.controller("MainCtrl", function($scope, $http, $firebaseArray, $firebaseObject, $firebaseAuth, $location, $routeParams, $route){
+	$scope.authObj = $firebaseAuth();
 
+
+	//get users info in MainCtrl
+	var userRef = firebase.database().ref().child("users");
+	$scope.users = $firebaseObject(userRef);
+
+	console.log($scope.users.name);
+
+	//add noob points
+	$scope.noobPt = 0;
+	$scope.addNoobPt = function() {
+		$scope.noobPt = $scope.noobPt + 1;
+		console.log($scope.noobPt);
+	}
+	//add assassin points
+	$scope.assnPt = 0;
+	$scope.addAssnPt = function() {
+		$scope.assnPt = $scope.assnPt + 1;
+		console.log($scope.assnPt);
+	}
 
 
 
@@ -38,8 +58,6 @@ app.controller("MainCtrl", function($scope, $http, $firebaseArray, $firebaseObje
 
 
 	//sign out f(x)
-	$scope.authObj = $firebaseAuth();
-
 	$scope.signOut= function(){
     	$scope.authObj.$signOut();
     	$location.path("/login")
@@ -53,7 +71,7 @@ app.controller("SignUpCtrl", function($scope, $http, $route, $firebaseObject, $f
 
 	//function to sign up
 	$scope.signUp = function() {
-		console.log($scope.name + $scope.email + $scope.password);
+		console.log($scope.name + " " + $scope.email + " " + $scope.password);
 
 		console.log($scope.authObj);
 		$scope.authObj.$createUserWithEmailAndPassword($scope.email, $scope.password)
@@ -66,6 +84,8 @@ app.controller("SignUpCtrl", function($scope, $http, $route, $firebaseObject, $f
 			$scope.users.email = $scope.email;
 			$scope.users.password = $scope.password;
 			$scope.users.$save();
+
+			console.log($scope.users);
 
 			$location.path('/');
 			

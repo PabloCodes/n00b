@@ -5,6 +5,23 @@
 </div>
 <div class="row">
 	<div class="col-sm-12">
+		<ul>
+			<li ng-repeat="user in users">
+				{{user.name}} 
+				
+				<span class="btn btn-danger btn-xs" ng-click="addNoobPt()">
+					They're a n00b!
+				</span>
+				
+				<span class="btn btn-success btn-xs" ng-click="addAssnPt()">
+					They're l33t!
+				</span>
+			</li>
+		</ul>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-12">
 		<button ng-click="signOut()">Sign Out!</button>
 	</div>
 </div>
