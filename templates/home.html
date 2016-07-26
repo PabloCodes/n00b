@@ -7,15 +7,19 @@
 	<div class="col-sm-12">
 		<ul>
 			<li ng-repeat="user in users">
-				{{user.name}} 
-				
-				<span class="btn btn-danger btn-xs" ng-click="addNoobPt()">
-					They're a n00b!
-				</span>
-				
-				<span class="btn btn-success btn-xs" ng-click="addAssnPt()">
+				<div>{{user.name}}</div>
+				<div>
+					n00b points: {{noobPt}}
+					<span class="btn btn-danger btn-xs" ng-click="addNoobPt()">
+						They're a n00b!
+					</span>
+				</div>
+				<div>
+					4ss4s1n points: {{assnPt}}
+					<span class="btn btn-success btn-xs" ng-click="addAssnPt()">
 					They're l33t!
-				</span>
+					</span>
+				</div> 
 			</li>
 		</ul>
 	</div>
