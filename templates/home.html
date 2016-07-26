@@ -1,31 +1,29 @@
 <div class="row">
-	<div class="col-sm-12">
-		teh n00b b04rd
+	<div class="col-sm-5 col-sm-offset-3">
+		<h1> teh n00b b04rd </h1>
+	</div>
+	<div class="col-sm-4">
+		<button ng-click="signOut()">Sign Out!</button>
 	</div>
 </div>
 <div class="row">
 	<div class="col-sm-12">
 		<ul>
 			<li ng-repeat="user in users">
-				<div>{{user.name}}</div>
-				<div>
-					n00b points: {{noobPt}}
+				<div>{{user.name.toLowerCase()}}</div>
+				<div class="point">
+					n00b points: {{noobCount[noobCount.length].count[count.length]}}
 					<span class="btn btn-danger btn-xs" ng-click="addNoobPt()">
-						They're a n00b!
+						they're a n00b!
 					</span>
 				</div>
-				<div>
+				<div class="point">
 					4ss4s1n points: {{assnPt}}
 					<span class="btn btn-success btn-xs" ng-click="addAssnPt()">
-					They're l33t!
+						they're l33t!
 					</span>
 				</div> 
 			</li>
 		</ul>
-	</div>
-</div>
-<div class="row">
-	<div class="col-sm-12">
-		<button ng-click="signOut()">Sign Out!</button>
 	</div>
 </div>
