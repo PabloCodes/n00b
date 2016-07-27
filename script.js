@@ -87,6 +87,7 @@ app.controller("MainCtrl", function($scope, $http, $firebaseArray, $firebaseObje
 	$scope.assnPt = 0;
 	$scope.addAssnPt = function() {
 		$scope.assnPt = $scope.assnPt + 1;
+		console.log($scope.users.points);
 	}
 
 
@@ -109,7 +110,7 @@ app.controller("SignUpCtrl", function($scope, $http, $route, $firebaseObject, $f
 
 	//function to sign up
 	$scope.signUp = function() {
-		console.log($scope.name + " " + $scope.email + " " + $scope.password);
+		console.log($scope.name + " " + $scope.email + " " + $scope.password + " " + $scope.points);
 
 
 		console.log($scope.authObj);
@@ -123,18 +124,25 @@ app.controller("SignUpCtrl", function($scope, $http, $route, $firebaseObject, $f
 			console.log(firebaseUser.uid + " created successfully!");
 			var userRef = firebase.database().ref().child("users").child(firebaseUser.uid);
 
+			// $scope.points = {
+			// 	'$scope.noobPt': 0,
+			// 	'$scope.assnPt': 0,
+			// };
+			// console.log($scope.points);
+
+			$scope.users = $firebaseObject(userRef);
 			$scope.points = {
 				'$scope.noobPt': 0,
 				'$scope.assnPt': 0,
 			};
 			console.log($scope.points);
-
-			$scope.users = $firebaseObject(userRef);
 			$scope.users.name = $scope.name;
 			$scope.users.email = $scope.email;
 			$scope.users.password = $scope.password;
 			$scope.users.points = $scope.points;
+			console.log($scope.users.points);
 			$scope.users.$save();
+			$scope.users.points.$save();
 
 			console.log($scope.users);
 
