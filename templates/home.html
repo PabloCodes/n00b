@@ -1,22 +1,25 @@
 <div class="row">
 	<div class="col-sm-4">
-		<button ng-click="signOut()">Sign Out!</button>
+		<button class="whiteHov" ng-click="signOut()">Sign Out!</button>
 	</div>
 </div>
 <div class="row">
 	<div class="col-sm-12">
 		<ul>
-			<li ng-repeat="user in users">
-				<div>{{user.name.toLowerCase()}}</div>
+			<li ng-repeat="firstname in firstnames | orderBy: 'name'">
+				<div>{{firstname.name.toLowerCase()}}</div>
 				<div class="point">
-					n00b points: {{noobCount[noobCount.length].count[count.length]}}
-					<span class="btn btn-danger btn-xs" ng-click="addNoobPt()">
+					n00b points: {{board[usersId].noobCount.length}}
+					<span class="btn btn-danger btn-xs" ng-show="proposals[usersId].noobProp == null || proposals[usersId].noobProp.isSeconded == true" ng-click="addNoobProp(firstname)">
 						they're a n00b!
+					</span>
+					<span class="btn btn-danger btn-xs" ng-show="proposals[usersId].noobProp.isSeconded == false" ng-click="addNoobPt(firstname)">
+						2nd!
 					</span>
 				</div>
 				<div class="point">
 					4ss4s1n points: {{assnPt}}
-					<span class="btn btn-success btn-xs" ng-click="addAssnPt()">
+					<span class="btn btn-success btn-xs" ng-click="addAssnPt(firstname.$id)">
 						they're l33t!
 					</span>
 				</div> 

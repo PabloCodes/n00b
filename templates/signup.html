@@ -1,5 +1,5 @@
  <center>
-            <form ng-submit="signUp()">
+            <form>
                  <div class="row">
                     <div class="col-sm-2 col-sm-offset-3">
                         Name :
@@ -21,7 +21,7 @@
                     <input ng-model="password">
                 </div>
                 <div class="row">
-                    <button class="whiteHov">
+                    <button ng-click="signUp()" class="whiteHov">
                         Create Account!
                     </button>
                 </div>
