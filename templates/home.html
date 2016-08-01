@@ -9,21 +9,23 @@
 			<li ng-repeat="firstname in firstnames | orderBy: 'name'">
 				<div>{{firstname.name.toLowerCase()}}</div>
 				<div class="point">
-					n00b points: {{board[usersId].noobCount.length}}
-					<span class="btn btn-danger btn-xs" ng-show="proposals[usersId].noobProp == null || proposals[usersId].noobProp.isSeconded == true" ng-click="addNoobProp(firstname)">
+					n00b points: {{<!-- board[usersId]. -->noobCount.length}}
+					<span class="btn btn-danger btn-xs" ng-show="proposals[usersId].noobProp == null || proposals[usersId].noobProp.isSeconded == true" ng-click="addNoobProp(firstname.$id)">
 						they're a n00b!
 					</span>
-					<span class="btn btn-danger btn-xs" ng-show="proposals[usersId].noobProp.isSeconded == false" ng-click="addNoobPt(firstname)">
+					<span class="btn btn-danger btn-xs" ng-show="proposals[usersId].noobProp.isSeconded == false" ng-click="addNoobPt(firstname.$id)">
 						2nd!
 					</span>
 				</div>
 				<div class="point">
 					4ss4s1n points: {{assnPt}}
-					<span class="btn btn-success btn-xs" ng-click="addAssnPt(firstname.$id)">
+					<span class="btn btn-success btn-xs" ng-click="addAssnPt(firstname)">
 						they're l33t!
 					</span>
 				</div> 
 			</li>
 		</ul>
+		<span class="btn btn-danger btn-xs" ng-click="clearPts()"> Cl34r points! </span>
+		
 	</div>
 </div>

@@ -57,7 +57,7 @@ app.controller("MainCtrl", function($scope, $http, $firebaseArray, $firebaseObje
 	$scope.board = $firebaseObject(boardRef);
 	console.log($scope.board);
 
-	//store noob points in proposals
+	//store noob props in proposals
 	var nPropRef = firebase.database().ref().child("proposals").child($routeParams.usersId).child("noobProp");
 	$scope.noobProp = $firebaseObject(nPropRef);
 	//console.log($scope.noobProp);
@@ -82,24 +82,15 @@ app.controller("MainCtrl", function($scope, $http, $firebaseArray, $firebaseObje
 	//store noob points in board
 	var nPtRef = firebase.database().ref().child("board").child($routeParams.usersId).child("noobCount");
 	$scope.noobCount = $firebaseArray(nPtRef);
-	//console.log($scope.noobPt);
 
 	//add noob points
-	// $scope.noobCount = 0;
-	console.log($scope.noobCount);
 	$scope.addNoobPt = function() {
 		if ($scope.usersId === $scope.noobProp.proposed_by) {
 			//in the real thing, the above statement should be !==
 			//however, without real individual buttons, there's no way
 			//to make sure that this works.
-
 			console.log($scope.noobProp);
-			console.log($scope.noobProp.$id);
-			// $scope.noobProp.$remove('isSeconded');
-			// $scope.noobProp.$add({
-			// 	isSeconded: true,
-			// 	seconded_by: $scope.usersId,
-			// });
+			console.log($scope.firstnames.$id);
 
 			$scope.noobProp.isSeconded = true;
 			$scope.noobProp.seconded_by = $scope.usersId;
@@ -107,7 +98,10 @@ app.controller("MainCtrl", function($scope, $http, $firebaseArray, $firebaseObje
 			$scope.noobProp.$save();
 			
 			$scope.noobCount.$add($scope.noobProp);
+			console.log($scope.noobCount);
 			$scope.noobCount.$save();
+			$scope.proposals[$scope.usersId].noobProp = {};
+			$scope.proposals.$save();
 		}
 		else {
 			console.log("error, you can't 'second' your own proposal!");
@@ -115,34 +109,16 @@ app.controller("MainCtrl", function($scope, $http, $firebaseArray, $firebaseObje
 		// console.log($scope.board);
 		// $scope.noobCount.$add($scope.noobProp);
 		// $scope.noobCount.$save();
-	}// .then(function(nPropRef) {
+		console.log($scope.board);
+		console.log($scope.board[$scope.usersId].noobCount.length);
+		console.log($scope.noobCount.length);
+		console.log($scope.firstnames);
+	}
+	
+	// .then(function(nPropRef) {
 	// 	nPropRef = [];
 	// })
 
-	//add points to the user
-		// $scope.noobCount += 1;
-		// $scope.points = {
-		// 	noobCount: $scope.noobCount,
-		// };
-		// $scope.users.points = $scope.points;
-
-		// $scope.users.$save();
-		// console.log($scope.users);
-		// $scope.users.points.$add({
-		// 	noobCount: $scope.noobCount,
-		// });
-		// $scope.users.$save();
-		// console.log($scope.users.points);
-		// console.log("I'm running");
-		// $scope.noobCount.$add ({
-		// 	sender: $scope.usersId,
-		// 	created_at: Date.now()
-		// });
-		
-		//$scope.noobPt.$push({'count':1,});		
-		//simple counter
-		//$scope.noobPt = $scope.noobPt + 1;
-		//console.log($scope.noobPt);
 
 	//store assassin points in proposals
 	var aPropRef = firebase.database().ref().child("proposals").child($routeParams.usersId).child("assnProp");
@@ -160,6 +136,24 @@ app.controller("MainCtrl", function($scope, $http, $firebaseArray, $firebaseObje
 		$scope.assnPt = $scope.assnPt + 1;
 		console.log($scope.points);
 		console.log($scope.users.points);
+	}
+
+	//n00b leaderBoard var
+	var leadRef = firebase.database().ref().child("leaderBoard");
+	$scope.leaderBoard = $firebaseObject(leadRef);
+
+	//push to leaderBoard
+	$scope.addLB = function() {
+		
+	}
+
+	//clear points
+	$scope.clearPts = function() {
+		//once you get individual buttons working you'll need a for loop here to cycle through users
+
+		$scope.board[$scope.usersId].noobCount = {};
+		$scope.board.$save();
+		console.log($scope.board);
 	}
 
 	//sign out f(x)
