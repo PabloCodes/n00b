@@ -84,7 +84,7 @@ app.controller("MainCtrl", function($scope, $http, $firebaseArray, $firebaseObje
 	$scope.noobCount = $firebaseArray(nPtRef);
 
 		//add noob points
-	$scope.addNoobPt = function(friendId) {
+	$scope.addNoobPt = function(personalizedID) {
 		if ($scope.usersId === $scope.noobProp.proposed_by) {
 			//in the real thing, the above statement should be !==
 			//however, without real individual buttons, there's no way

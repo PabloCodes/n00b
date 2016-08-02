@@ -1,7 +1,14 @@
+/*homepage*/
 * {
-	background-color: black;
 	color: #00FF00;
 	font-family: 'Cutive Mono', monospace;
+}
+body {
+	background-image: url(NoobBoard.png);
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	/*-o-background-size: cover;*/
+	background-size: cover;
 }
 td {
 	border-color: #00FF00;
@@ -23,6 +30,9 @@ td {
 	color: black;
 	background-color: #E51F00;
 }
+.down {
+	margin-top: 10px;
+}
 li {
 	list-style: none;
 	text-align: center;
@@ -39,6 +49,12 @@ a {
 }
 a:hover {
 	color: white;
+}
+input {
+	background-color: black;
+}
+.whiteHov {
+	background-color: black;
 }
 .whiteHov:hover {
 	color: white;
