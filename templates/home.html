@@ -4,28 +4,36 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-sm-12">
-		<ul>
-			<li ng-repeat="firstname in firstnames | orderBy: 'name'">
-				<div>{{firstname.name.toLowerCase()}}</div>
-				<div class="point">
-					n00b points: {{<!-- board[usersId]. -->noobCount.length}}
+	<div class="col-sm-8 col-sm-offset-3">
+		
+		<table>
+			<tr class="head">
+				<td>user</td>
+				<td>n00b points</td>
+				<td>4ssass1n points</td>
+			</tr>
+			<tr ng-repeat="firstname in firstnames | orderBy: 'name'">
+				<td>{{firstname.name.toLowerCase()}}
+				{{firstname.$id}}
+				</td>
+				<td class="point">
+					{{<!-- board[usersId]. -->noobCount.length}}
 					<span class="btn btn-danger btn-xs" ng-show="proposals[usersId].noobProp == null || proposals[usersId].noobProp.isSeconded == true" ng-click="addNoobProp(firstname.$id)">
 						they're a n00b!
 					</span>
 					<span class="btn btn-danger btn-xs" ng-show="proposals[usersId].noobProp.isSeconded == false" ng-click="addNoobPt(firstname.$id)">
 						2nd!
 					</span>
-				</div>
-				<div class="point">
-					4ss4s1n points: {{assnPt}}
+				</td>
+				<td class="point">
+					{{assnPt}}
 					<span class="btn btn-success btn-xs" ng-click="addAssnPt(firstname)">
 						they're l33t!
 					</span>
-				</div> 
-			</li>
-		</ul>
-		<span class="btn btn-danger btn-xs" ng-click="clearPts()"> Cl34r points! </span>
-		
+				</td> 
+			</tr>
+		</table>
+		<span class="btn btn-danger btn-xs" ng-click="addLB()"> Add n00b l34d3r! </span>
+
 	</div>
 </div>

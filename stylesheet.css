@@ -3,6 +3,15 @@
 	color: #00FF00;
 	font-family: 'Cutive Mono', monospace;
 }
+td {
+	border-color: #00FF00;
+	border: solid 0.5px;
+	padding: 5px;
+}
+.head {
+	text-align: center;
+	font-size: 110%;
+}
 .container {
 	width: 100%;
 }
@@ -23,7 +32,6 @@ h1 {
 }
 .point {
 	margin-left: 15px;
-	font-size: 85%;
 }
 a {
 	color: inherit;

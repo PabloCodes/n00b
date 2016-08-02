@@ -33,36 +33,36 @@ app.run(["$rootScope", "$location", function($rootScope, $location) {
 }]);
 
 app.controller("MainCtrl", function($scope, $http, $firebaseArray, $firebaseObject, $firebaseAuth, $location, $routeParams, $route, currentAuth){
-	//get users Id
+		//get users Id
 	$scope.authObj = $firebaseAuth();
 	$scope.usersId = currentAuth.uid;
 	console.log($scope.usersId);
 	
-	//name getter into MainCtrl
+		//name getter into MainCtrl
 	var nameRef = firebase.database().ref().child("users");
 	$scope.firstnames = $firebaseArray(nameRef);
 	console.log($scope.firstnames);
 
-	//get users info in MainCtrl
+		//get users info in MainCtrl
 	var userRef = firebase.database().ref().child("users").child($routeParams.usersId);
 	$scope.users = $firebaseObject(userRef);
 	
-	//proposals var for ng-show l-13 of home.html
+		//proposals var for ng-show l-13 of home.html
 	var propRef = firebase.database().ref().child("proposals");
 	$scope.proposals = $firebaseObject(propRef);
 	console.log($scope.proposals);
 
-	//board to be able to log points
+		//board to be able to log points
 	var boardRef = firebase.database().ref().child("board");
-	$scope.board = $firebaseObject(boardRef);
+	$scope.board = $firebaseArray(boardRef);
 	console.log($scope.board);
 
-	//store noob props in proposals
+		//store noob props in proposals
 	var nPropRef = firebase.database().ref().child("proposals").child($routeParams.usersId).child("noobProp");
 	$scope.noobProp = $firebaseObject(nPropRef);
 	//console.log($scope.noobProp);
 
-	//add noob proposals
+		//add noob proposals
 	//$scope.noobProp
 	$scope.addNoobProp = function() {
 		// $scope.noobProp.$add({
@@ -79,18 +79,18 @@ app.controller("MainCtrl", function($scope, $http, $firebaseArray, $firebaseObje
 		$scope.noobProp.$save();
 	}
 
-	//store noob points in board
+		//store noob points in board
 	var nPtRef = firebase.database().ref().child("board").child($routeParams.usersId).child("noobCount");
 	$scope.noobCount = $firebaseArray(nPtRef);
 
-	//add noob points
-	$scope.addNoobPt = function() {
+		//add noob points
+	$scope.addNoobPt = function(friendId) {
 		if ($scope.usersId === $scope.noobProp.proposed_by) {
 			//in the real thing, the above statement should be !==
 			//however, without real individual buttons, there's no way
 			//to make sure that this works.
 			console.log($scope.noobProp);
-			console.log($scope.firstnames.$id);
+			console.log($scope.firstnames);
 
 			$scope.noobProp.isSeconded = true;
 			$scope.noobProp.seconded_by = $scope.usersId;
@@ -110,7 +110,7 @@ app.controller("MainCtrl", function($scope, $http, $firebaseArray, $firebaseObje
 		// $scope.noobCount.$add($scope.noobProp);
 		// $scope.noobCount.$save();
 		console.log($scope.board);
-		console.log($scope.board[$scope.usersId].noobCount.length);
+		//console.log($scope.board[$scope.usersId].noobCount);
 		console.log($scope.noobCount.length);
 		console.log($scope.firstnames);
 	}
@@ -120,17 +120,17 @@ app.controller("MainCtrl", function($scope, $http, $firebaseArray, $firebaseObje
 	// })
 
 
-	//store assassin points in proposals
+		//store assassin points in proposals
 	var aPropRef = firebase.database().ref().child("proposals").child($routeParams.usersId).child("assnProp");
 	$scope.assnProp = $firebaseObject(aPropRef);
 	//console.log($scope.assnProp);
 
-	//store assassin points in board
+		//store assassin points in board
 	var aPtRef = firebase.database().ref().child("board").child($routeParams.usersId).child("assnCount");
 	$scope.assnPt = $firebaseObject(aPtRef);
 	//console.log($scope.assnPt);
 	
-	//add assassin points
+		//add assassin points
 	$scope.assnPt = 0;
 	$scope.addAssnPt = function() {
 		$scope.assnPt = $scope.assnPt + 1;
@@ -138,23 +138,48 @@ app.controller("MainCtrl", function($scope, $http, $firebaseArray, $firebaseObje
 		console.log($scope.users.points);
 	}
 
-	//n00b leaderBoard var
-	var leadRef = firebase.database().ref().child("leaderBoard");
-	$scope.leaderBoard = $firebaseObject(leadRef);
+		//n00b leaderBoard var
+	var lBoardRef = firebase.database().ref().child("leaderBoard");
+	$scope.leaderBoard = $firebaseObject(lBoardRef);
 
-	//push to leaderBoard
+		//n00b leader var 
+	var leadRef = firebase.database().ref().child("leaderBoard").child("leader");
+	$scope.leader = $firebaseObject(leadRef);
+		//push to leaderBoard
 	$scope.addLB = function() {
-		
+		console.log($scope.board.length);
+		for (var i=0; i<$scope.board.length; i++) {
+			console.log("outer 'for' loop LB");
+			$scope.leaderBoard.leader = {};
+			console.log($scope.leaderBoard.leader);
+			console.log($scope.board[i].noobCount);
+			for (var j=0; j<$scope.board[i].length; j++) {
+				console.log("inner 'for' loop LB");
+				if ($scope.board[i].noobCount[j] > $scope.leaderBoard.leader) {
+					$scope.leaderBoard.leader = $scope.board[i].noobCount[j];
+				}
+				else {
+					return;
+				}
+			}
+		}
+			//clear points
+		$scope.clearPts = function() {
+			//once you get individual buttons working you'll need a for loop here to cycle through users
+			for (var i=0; i<$scope.board.length; i++) {
+				console.log("clear 'for' loop");
+				console.log($scope.board[i]);
+				$scope.board[i].noobCount = {};
+				$scope.board.$save();
+				console.log($scope.board);
+			}
+			// $scope.board[$scope.usersId].noobCount = {};
+			// $scope.board.$save();
+			// console.log($scope.board);
+		}
 	}
 
-	//clear points
-	$scope.clearPts = function() {
-		//once you get individual buttons working you'll need a for loop here to cycle through users
-
-		$scope.board[$scope.usersId].noobCount = {};
-		$scope.board.$save();
-		console.log($scope.board);
-	}
+	
 
 	//sign out f(x)
 	$scope.signOut= function(){
@@ -181,16 +206,9 @@ app.controller("SignUpCtrl", function($scope, $http, $firebaseArray, $firebaseOb
 
 			$scope.users = $firebaseObject(userRef);
 			
-			// //trying to add a points key to users
-			// $scope.points = {
-			// 	'$scope.noobPt': 0,
-			// 	'$scope.assnPt': 0,
-			// };
-			// console.log($scope.points);
 			
 			$scope.users.name = $scope.name;
 			$scope.users.email = $scope.email;
-			//$scope.users.password = $scope.password;
 			// $scope.users.points = $scope.points;
 			// console.log($scope.users.points);
 			$scope.users.$save()
