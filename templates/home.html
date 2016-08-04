@@ -18,10 +18,10 @@
 				</td>
 				<td class="point">
 					{{<!-- board[usersId]. -->noobCount.length}}
-					<span class="btn btn-danger btn-xs" ng-show="proposals[usersId].noobProp == null || proposals[usersId].noobProp.isSeconded == true" ng-click="addNoobProp(firstname.$id)">
-						they're a n00b!
+					<span class="btn btn-danger btn-xs" ng-show="proposals[{{firstname.$id}}].noobProp == null || proposals[{{firstname.$id}}].noobProp.isSeconded == true">
+						<a ng-href="#/noobform/{{firstname.$id}}">they're a n00b!</a>
 					</span>
-					<span class="btn btn-danger btn-xs" ng-show="proposals[usersId].noobProp.isSeconded == false" ng-click="addNoobPt(firstname.$id)">
+					<span class="btn btn-danger btn-xs" ng-show="proposals[{{firstname.$id}}].noobProp.isSeconded == false" ng-click="addNoobPt()">
 						2nd!
 					</span>
 				</td>

@@ -19,6 +19,14 @@ app.config(function($routeProvider) {
 				return $firebaseAuth().$requireSignIn();
 			}
 		}
+	}).when('/noobform/:noobsId', {
+		controller: "NoobCtrl",
+		templateUrl: "templates/noobform.html",
+		resolve: {
+			"currentAuth": function($firebaseAuth) {
+				return $firebaseAuth().$requireSignIn();
+			}
+		}
 	})
 });
 
@@ -84,8 +92,9 @@ app.controller("MainCtrl", function($scope, $http, $firebaseArray, $firebaseObje
 	$scope.noobCount = $firebaseArray(nPtRef);
 
 		//add noob points
-	$scope.addNoobPt = function(personalizedID) {
-		if ($scope.usersId === $scope.noobProp.proposed_by) {
+	$scope.addNoobPt = function() {
+		console.log($scope.noobProp);
+		if ($scope.usersId !== $scope.noobProp.proposed_by) {
 			//in the real thing, the above statement should be !==
 			//however, without real individual buttons, there's no way
 			//to make sure that this works.
@@ -142,21 +151,21 @@ app.controller("MainCtrl", function($scope, $http, $firebaseArray, $firebaseObje
 	var lBoardRef = firebase.database().ref().child("leaderBoard");
 	$scope.leaderBoard = $firebaseObject(lBoardRef);
 
-		//n00b leader var 
-	var leadRef = firebase.database().ref().child("leaderBoard").child("leader");
-	$scope.leader = $firebaseObject(leadRef);
+		//n00b leaders var 
+	var leadRef = firebase.database().ref().child("leaderBoard").child("leaders");
+	$scope.leaders = $firebaseObject(leadRef);
 		//push to leaderBoard
 	$scope.addLB = function() {
 		console.log($scope.board.length);
 		for (var i=0; i<$scope.board.length; i++) {
 			console.log("outer 'for' loop LB");
-			$scope.leaderBoard.leader = {};
-			console.log($scope.leaderBoard.leader);
+			$scope.leaderBoard.leaders = {};
+			console.log($scope.leaderBoard.leaders);
 			console.log($scope.board[i].noobCount);
 			for (var j=0; j<$scope.board[i].length; j++) {
 				console.log("inner 'for' loop LB");
-				if ($scope.board[i].noobCount[j] > $scope.leaderBoard.leader) {
-					$scope.leaderBoard.leader = $scope.board[i].noobCount[j];
+				if ($scope.board[i].noobCount[j] > $scope.leaderBoard.leaders) {
+					$scope.leaderBoard.leaders = $scope.board[i].noobCount[j];
 				}
 				else {
 					return;
@@ -188,6 +197,51 @@ app.controller("MainCtrl", function($scope, $http, $firebaseArray, $firebaseObje
     };
 });
 
+
+app.controller("NoobCtrl", function($scope, $http, $firebaseArray, $firebaseObject, $firebaseAuth, $location, $routeParams, $route, currentAuth) {
+		//get users Id
+	$scope.authObj = $firebaseAuth();
+	$scope.usersId = currentAuth.uid;
+	console.log($scope.usersId);
+	
+		//name getter into MainCtrl
+	var nameRef = firebase.database().ref().child("users");
+	$scope.firstnames = $firebaseArray(nameRef);
+	console.log($scope.firstnames);
+
+		//get users info in MainCtrl
+	var userRef = firebase.database().ref().child("users").child(currentAuth.uid);
+	$scope.users = $firebaseObject(userRef);
+	
+		//proposals var for ng-show l-13 of home.html
+	var propRef = firebase.database().ref().child("proposals");
+	$scope.proposals = $firebaseObject(propRef);
+	console.log($scope.proposals);
+
+		//store noob props in proposals
+	var nPropRef = firebase.database().ref().child("proposals").child($routeParams.noobsId).child("noobProp");
+	$scope.noobProp = $firebaseObject(nPropRef);
+	//console.log($scope.noobProp);
+
+	//addNoobProp
+	$scope.addNoobProp = function(userName) {
+	// $scope.noobProp.$add({
+	// 	'proposed_by': $scope.usersId,
+	// 	'created_at': Date.now(),
+	// 	'isSeconded': false,
+	// });
+	$scope.noobProp.proposed_by = $scope.usersId;
+	$scope.noobProp.created_at = Date.now();
+	$scope.noobProp.isSeconded = false;
+
+	console.log("prop added");
+	console.log($scope.proposals);
+	$scope.noobProp.$save();
+	
+	$location.path('/user/'+$scope.usersId);
+	}
+
+});
 
 
 app.controller("SignUpCtrl", function($scope, $http, $firebaseArray, $firebaseObject, $firebaseAuth, $location, $routeParams, $route) {
