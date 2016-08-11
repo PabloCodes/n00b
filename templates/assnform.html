@@ -1,9 +1,9 @@
-<div>add your assassin points here</div>
 <form ng-submit="addAssnProp(userName)">
-	<div>
-		wh0's teh Assassin?
-		{{firstname}}
+		<div>
+		<ul ng-repeat="firstname in firstnames">
+			<li ng-show="{{firstname.$id == assnName}}"> r u sure {{firstname.name.toLowerCase()}} is an assassin? </li>
+		</ul>
 		<input class="t-off" ng-model="userName">	
+		<span class="col-xs-4 col-xs-offset-5"><button class="whiteHov">Yes</button></span>
 	</div>
-	<button class="whiteHov">submit!</button>
 </form>

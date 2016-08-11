@@ -1,9 +1,9 @@
-<div>add your noob points here</div>
 <form ng-submit="addNoobProp(userName)">
 	<div>
-		wh0's teh n00b?
-		{{firstname}}
+		<ul ng-repeat="firstname in firstnames">
+			<li ng-show="{{firstname.$id == noobName}}"> r u sure {{firstname.name.toLowerCase()}} is a n00b? </li>
+		</ul>
 		<input class="t-off" ng-model="userName">	
+		<span class="col-xs-4 col-xs-offset-5"><button class="whiteHov">Yes</button></span>
 	</div>
-	<button class="whiteHov">submit!</button>
 </form>

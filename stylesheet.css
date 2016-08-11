@@ -15,6 +15,9 @@ td {
 	border: solid 0.5px;
 	padding: 5px;
 }
+.t-off {
+	transform: translate(1000%);
+}
 .head {
 	text-align: center;
 	font-size: 110%;

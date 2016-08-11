@@ -1,10 +1,10 @@
 <div class="row">
-	<div class="col-sm-4">
+	<div class="col-xs-4">
 		<button class="whiteHov" ng-click="signOut()">Sign Out!</button>
 	</div>
 </div>
 <div class="row">
-	<div class="col-sm-8 col-sm-offset-3">
+	<div class="col-xs-8 col-xs-offset-3">
 		
 		<table>
 			<tr class="head">
@@ -14,7 +14,7 @@
 			</tr>
 			<tr ng-repeat="firstname in firstnames | orderBy: 'name'">
 				<td>{{firstname.name.toLowerCase()}}
-				{{firstname.$id}}
+				<!-- {{firstname.$id}} -->
 				</td>
 				<td class="point">
 					{{board[firstname.$id].noobCount | objSize}}
@@ -35,7 +35,8 @@
 				</td> 
 			</tr>
 		</table>
-		<span class="btn btn-danger btn-xs col-sm-offset-4 down" ng-click="addLB()"> Add n00b l34d3r! </span>
+		<!-- I should be able to get this working soon
+		<span class="btn btn-danger btn-xs col-sm-offset-4 down" ng-click="addLB()"> Add n00b l34d3r! </span> -->
 
 	</div>
 </div>
