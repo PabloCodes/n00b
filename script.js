@@ -1,5 +1,14 @@
 var app = angular.module("noobApp", ["ngRoute", "firebase"])
 
+app.filter('objSize', function() {
+	return function(o) {
+		if(o == undefined) {
+			return 0;
+		}
+		return Object.keys(o).length;
+	};
+})
+
 app.config(function($routeProvider) {
 	$routeProvider.when('/', {
 		controller: "LogInCtrl",
@@ -22,6 +31,14 @@ app.config(function($routeProvider) {
 	}).when('/noobform/:noobsId', {
 		controller: "NoobCtrl",
 		templateUrl: "templates/noobform.html",
+		resolve: {
+			"currentAuth": function($firebaseAuth) {
+				return $firebaseAuth().$requireSignIn();
+			}
+		}
+	}).when('/assnform/:assnsId', {
+		controller: "AssnCtrl",
+		templateUrl: "templates/assnform.html",
 		resolve: {
 			"currentAuth": function($firebaseAuth) {
 				return $firebaseAuth().$requireSignIn();
@@ -62,8 +79,12 @@ app.controller("MainCtrl", function($scope, $http, $firebaseArray, $firebaseObje
 
 		//board to be able to log points
 	var boardRef = firebase.database().ref().child("board");
-	$scope.board = $firebaseArray(boardRef);
+	$scope.board = $firebaseObject(boardRef)
+	$scope.board.$loaded(function() {
 	console.log($scope.board);
+	//console.log($scope.board[0].noobCount.length);	
+	});
+	
 
 		//store noob props in proposals
 	var nPropRef = firebase.database().ref().child("proposals").child($routeParams.usersId).child("noobProp");
@@ -136,13 +157,13 @@ app.controller("MainCtrl", function($scope, $http, $firebaseArray, $firebaseObje
 
 		//store assassin points in board
 	var aPtRef = firebase.database().ref().child("board").child($routeParams.usersId).child("assnCount");
-	$scope.assnPt = $firebaseObject(aPtRef);
+	$scope.assnCount = $firebaseObject(aPtRef);
 	//console.log($scope.assnPt);
 	
 		//add assassin points
-	$scope.assnPt = 0;
+	$scope.assnCount = 0;
 	$scope.addAssnPt = function() {
-		$scope.assnPt = $scope.assnPt + 1;
+		$scope.assnCount = $scope.assn + 1;
 		console.log($scope.points);
 		console.log($scope.users.points);
 	}
@@ -223,8 +244,12 @@ app.controller("NoobCtrl", function($scope, $http, $firebaseArray, $firebaseObje
 	$scope.noobProp = $firebaseObject(nPropRef);
 	//console.log($scope.noobProp);
 
+		//store noob points in board
+	var nPtRef = firebase.database().ref().child("board").child($routeParams.noobsId).child("noobCount");
+	$scope.noobCount = $firebaseArray(nPtRef);
+
 	//addNoobProp
-	$scope.addNoobProp = function(userName) {
+	$scope.addNoobProp = function() {
 	// $scope.noobProp.$add({
 	// 	'proposed_by': $scope.usersId,
 	// 	'created_at': Date.now(),
@@ -234,11 +259,76 @@ app.controller("NoobCtrl", function($scope, $http, $firebaseArray, $firebaseObje
 	$scope.noobProp.created_at = Date.now();
 	$scope.noobProp.isSeconded = false;
 
-	console.log("prop added");
+	console.log("noobprop added");
 	console.log($scope.proposals);
 	$scope.noobProp.$save();
+
+	// hacks
+	$scope.noobCount.$add($scope.noobProp).then(function() {
+			//console.log($scope.noobCount);
+			$scope.noobCount.$save();
+			$scope.proposals[$routeParams.noobsId].noobProp = {};
+			$scope.proposals.$save();
 	
 	$location.path('/user/'+$scope.usersId);
+	});
+	}
+
+});
+
+app.controller("AssnCtrl", function($scope, $http, $firebaseArray, $firebaseObject, $firebaseAuth, $location, $routeParams, $route, currentAuth) {
+		//get users Id
+	$scope.authObj = $firebaseAuth();
+	$scope.usersId = currentAuth.uid;
+	console.log($scope.usersId);
+	
+		//name getter into MainCtrl
+	var nameRef = firebase.database().ref().child("users");
+	$scope.firstnames = $firebaseArray(nameRef);
+	console.log($scope.firstnames);
+
+		//get users info in MainCtrl
+	var userRef = firebase.database().ref().child("users").child(currentAuth.uid);
+	$scope.users = $firebaseObject(userRef);
+	
+		//proposals var for ng-show l-13 of home.html
+	var propRef = firebase.database().ref().child("proposals");
+	$scope.proposals = $firebaseObject(propRef);
+	console.log($scope.proposals);
+
+		//store noob props in proposals
+	var aPropRef = firebase.database().ref().child("proposals").child($routeParams.assnsId).child("assnProp");
+	$scope.assnProp = $firebaseObject(aPropRef);
+	//console.log($scope.noobProp);
+
+		//store noob points in board
+	var aPtRef = firebase.database().ref().child("board").child($routeParams.assnsId).child("assnCount");
+	$scope.assnCount = $firebaseArray(aPtRef);
+
+	//addNoobProp
+	$scope.addAssnProp = function() {
+	// $scope.noobProp.$add({
+	// 	'proposed_by': $scope.usersId,
+	// 	'created_at': Date.now(),
+	// 	'isSeconded': false,
+	// });
+	$scope.assnProp.proposed_by = $scope.usersId;
+	$scope.assnProp.created_at = Date.now();
+	$scope.assnProp.isSeconded = false;
+
+	console.log("assnprop added");
+	console.log($scope.proposals);
+	$scope.assnProp.$save();
+
+	// hacks
+	$scope.assnCount.$add($scope.assnProp).then(function() {
+			//console.log($scope.noobCount);
+			$scope.assnCount.$save();
+			$scope.proposals[$routeParams.assnsId].assnProp = {};
+			$scope.proposals.$save();
+	
+	$location.path('/user/'+$scope.usersId);
+	});
 	}
 
 });

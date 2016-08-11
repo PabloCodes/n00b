@@ -4,7 +4,7 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-sm-8 col-sm-offset-2">
+	<div class="col-sm-8 col-sm-offset-3">
 		
 		<table>
 			<tr class="head">
@@ -17,18 +17,20 @@
 				{{firstname.$id}}
 				</td>
 				<td class="point">
-					{{<!-- board[usersId]. -->noobCount.length}}
+					{{board[firstname.$id].noobCount | objSize}}
 					<span class="btn btn-danger btn-xs" ng-show="proposals[{{firstname.$id}}].noobProp == null || proposals[{{firstname.$id}}].noobProp.isSeconded == true">
 						<a ng-href="#/noobform/{{firstname.$id}}">they're a n00b!</a>
 					</span>
+					<!-- this is the 2nd button
 					<span class="btn btn-danger btn-xs" ng-show="proposals[{{firstname.$id}}].noobProp.isSeconded == false" ng-click="addNoobPt()">
 						2nd!
-					</span>
+					</span> -->
 				</td>
 				<td class="point">
-					{{assnPt}}
-					<span class="btn btn-success btn-xs" ng-click="addAssnPt(firstname)">
-						they're l33t!
+					{{board[firstname.$id].assnCount | objSize}}
+					<span class="btn btn-success btn-xs" ng-show="proposals[{{firstname.$id}}].assnProp == null || proposals[{{firstname.$id}}].assnProp.isSeconded == true">
+						<a ng-href="#/assnform/{{firstname.$id}}">
+						they're l33t!</a>
 					</span>
 				</td> 
 			</tr>
